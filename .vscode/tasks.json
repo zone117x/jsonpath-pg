@@ -3,7 +3,7 @@
   "tasks": [
     {
       "label": "build",
-      "command": "cmake ../src/c && make clean && make",
+      "command": "cmake -DCMAKE_BUILD_TYPE=Debug ../src/c && make clean && make",
       "type": "shell",
       "options": {
         "cwd": "${workspaceFolder}/build"

@@ -38,7 +38,9 @@ if (DEFINED EMSCRIPTEN)
             "-fsanitize=address"
             "-sINITIAL_MEMORY=67108864"
         )
-    endif()
+    else ()
+        target_link_options(jsonpath_parse PRIVATE "-sINITIAL_MEMORY=1966080")
+    endif ()
 
 else ()
     add_executable(jsonpath_parse ${SOURCE_FILES})

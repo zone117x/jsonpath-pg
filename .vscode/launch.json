@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug",
+      "program": "${workspaceFolder}/build/jsonpath_parse",
+      "args": [
+        "$.asdf[1 to last].**.thing.double() ? ((@.leaf[7] - 12345) == 1 % 9)"
+      ],
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "build"
+    }
+  ]
+}

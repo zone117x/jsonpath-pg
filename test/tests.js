@@ -19,6 +19,10 @@ const testVectors = [
     [
         '@[0][1,2,3].*[6 to 32].**',
         '{"expr":[{"type":"@"},{"type":"[subscript]","elems":[{"from":[{"type":"numeric","value":0}],"to":[]}]},{"type":"[subscript]","elems":[{"from":[{"type":"numeric","value":1}],"to":[]},{"from":[{"type":"numeric","value":2}],"to":[]},{"from":[{"type":"numeric","value":3}],"to":[]}]},{"type":".*"},{"type":"[subscript]","elems":[{"from":[{"type":"numeric","value":6}],"to":[{"type":"numeric","value":32}]}]},{"type":".**","first":0,"last":4294967295}],"lax":true}'
+    ],
+    [
+        '$.track ? (exists(@.segments[*] ? (@.HR > 130))).segments.size()',
+        '{"expr":[{"type":"$"},{"type":".key","value":"track"},{"type":"?","arg":[{"type":"exists","arg":[{"type":"@"},{"type":".key","value":"segments"},{"type":"[*]"},{"type":"?","arg":[{"type":">","left":[{"type":"@"},{"type":".key","value":"HR"}],"right":[{"type":"numeric","value":130}]}]}]}]},{"type":".key","value":"segments"},{"type":"size"}],"lax":true}'
     ]
 ];
 

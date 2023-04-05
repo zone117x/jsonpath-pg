@@ -191,6 +191,8 @@
 // #include "regex/regex.h"
 // #include "utils/builtins.h"
 
+#include "safe_memory.h"
+
 #define PG_UINT32_MAX	(0xFFFFFFFFU)
 #define PG_INT32_MAX	(0x7FFFFFFF)
 #define PG_INT32_MIN	(-0x7FFFFFFF-1)
@@ -380,7 +382,7 @@ new_list(NodeTag type, int min_size)
 	max_size = min_size;
 #endif
 
-	newlist = (List *) calloc(1, offsetof(List, initial_elements) +
+	newlist = (List *) safe_calloc(1, offsetof(List, initial_elements) +
 							  max_size * sizeof(ListCell));
 	newlist->type = type;
 	newlist->length = min_size;
@@ -443,7 +445,7 @@ enlarge_list(List *list, int min_size)
 		 * to create such a guarantee now.)
 		 */
 		list->elements = 
-		list->elements = (ListCell *)calloc(1, new_max_len * sizeof(ListCell));
+		list->elements = (ListCell *)safe_calloc(1, new_max_len * sizeof(ListCell));
 		memcpy(list->elements, list->initial_elements,
 			   list->length * sizeof(ListCell));
 
@@ -464,7 +466,7 @@ enlarge_list(List *list, int min_size)
 	{
 #ifndef DEBUG_LIST_MEMORY_USAGE
 		/* Normally, let repalloc deal with enlargement */
-		list->elements = (ListCell *) realloc(list->elements,
+		list->elements = (ListCell *) safe_realloc(list->elements,
 											   new_max_len * sizeof(ListCell));
 #else
 		/*
@@ -734,8 +736,8 @@ static bool makeItemLikeRegex(JsonPathParseItem *expr,
  * so we can easily have it use palloc instead of malloc.  This prevents
  * memory leaks if we error out during parsing.
  */
-#define YYMALLOC malloc
-#define YYFREE   free
+#define YYMALLOC safe_malloc
+#define YYFREE   safe_free
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -2156,7 +2158,7 @@ yyreduce:
         case 2:
 // #line 117 "jsonpath_gram.y"
     {
-										*result = calloc(1, sizeof(JsonPathParseResult));
+										*result = safe_calloc(1, sizeof(JsonPathParseResult));
 										(*result)->expr = (yyvsp[(2) - (2)].value);
 										(*result)->lax = (yyvsp[(1) - (2)].boolean);
 										(void) yynerrs;
@@ -2790,7 +2792,7 @@ yyreturn:
 static JsonPathParseItem *
 makeItemType(JsonPathItemType type)
 {
-	JsonPathParseItem *v = calloc(1, sizeof(*v));
+	JsonPathParseItem *v = safe_calloc(1, sizeof(*v));
 
 	v->type = type;
 	v->next = NULL;
@@ -2933,7 +2935,7 @@ makeIndexArray(List *list)
 	Assert(list != NIL);
 	v->value.array.nelems = list_length(list);
 
-	v->value.array.elems = calloc(1, sizeof(v->value.array.elems[0]) *
+	v->value.array.elems = safe_calloc(1, sizeof(v->value.array.elems[0]) *
 								  v->value.array.nelems);
 
 	foreach(cell, list)

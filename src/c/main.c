@@ -2,25 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-
 #include "cJSON.h"
-
-// #include "c.h"
-// #include "postgres.h"
-// #include "fmgr.h"
-// #include "utils/jsonpath.h"
-// #include "utils/numeric.h"
-// #include "utils/memutils.h"
-// #include "utils/elog.h"
-
-// new
 #include "jsonpath.h"
+#include "safe_memory.h"
 
-// Linker complains about these symbol if not declared
-const char *progname = "my_app_name";
-void json_errdetail() {}
-void unicode_is_normalized_quickcheck() {}
-void pg_log_generic() {}
 
 // Determine the type of the jsonpath expression item
 const char *json_path_item_type_to_string(JsonPathItemType type)
@@ -365,7 +350,7 @@ char *jsonpath_to_ast(const char *input)
 	cJSON_AddBoolToObject(json_ast, "lax", result->lax);
 
 	char *json_string = cJSON_PrintUnformatted(json_ast);
-	char *return_string = malloc(strlen(json_string) + 1);
+	char *return_string = safe_malloc(strlen(json_string) + 1);
 	strcpy(return_string, json_string);
 	return_string[strlen(json_string)] = '\0';
 
@@ -405,7 +390,7 @@ int main(int argc, char *argv[])
 		{
 			printf("%s\n", json_string);
 		}
-		free(json_string);
+		safe_free(json_string);
 	}
 
 	return parse_error ? 1 : 0;

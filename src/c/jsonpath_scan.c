@@ -33,6 +33,8 @@
 #include <ctype.h>
 #include <stdlib.h>
 
+#include "safe_memory.h"
+
 typedef unsigned int pg_wchar;
 #define MAX_UNICODE_EQUIVALENT_STRING	16
 #define MAX_MULTIBYTE_CHAR_LEN	4
@@ -6037,7 +6039,7 @@ jsonpath_scanner_init(const char *str, int slen)
 	 */
 
 	scanbuflen = slen;
-	scanbuf = calloc(1, slen + 2);
+	scanbuf = safe_calloc(1, slen + 2);
 	memcpy(scanbuf, str, slen);
 	scanbuf[slen] = scanbuf[slen + 1] = YY_END_OF_BUFFER_CHAR;
 	scanbufhandle = yy_scan_buffer(scanbuf, slen + 2);
@@ -6053,7 +6055,7 @@ static void
 jsonpath_scanner_finish(void)
 {
 	yy_delete_buffer(scanbufhandle);
-	free(scanbuf);
+	safe_free(scanbuf);
 }
 
 /*
@@ -6066,7 +6068,7 @@ resizeString(bool init, int appendLen)
 	if (init)
 	{
 		scanstring.total = Max(32, appendLen);
-		scanstring.val = (char *) calloc(1, scanstring.total);
+		scanstring.val = (char *) safe_calloc(1, scanstring.total);
 		scanstring.len = 0;
 	}
 	else
@@ -6075,7 +6077,7 @@ resizeString(bool init, int appendLen)
 		{
 			while (scanstring.len + appendLen >= scanstring.total)
 				scanstring.total *= 2;
-			scanstring.val = realloc(scanstring.val, scanstring.total);
+			scanstring.val = safe_realloc(scanstring.val, scanstring.total);
 		}
 	}
 }
@@ -6309,22 +6311,22 @@ parseHexChar(char *s, struct Node *escontext)
 void *
 jsonpath_yyalloc(yy_size_t bytes)
 {
-	return malloc(bytes);
+	return safe_malloc(bytes);
 }
 
 void *
 jsonpath_yyrealloc(void *ptr, yy_size_t bytes)
 {
 	if (ptr)
-		return realloc(ptr, bytes);
+		return safe_realloc(ptr, bytes);
 	else
-		return malloc(bytes);
+		return safe_malloc(bytes);
 }
 
 void
 jsonpath_yyfree(void *ptr)
 {
 	if (ptr)
-		free(ptr);
+		safe_free(ptr);
 }
 

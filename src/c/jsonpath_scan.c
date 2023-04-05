@@ -6037,7 +6037,7 @@ jsonpath_scanner_init(const char *str, int slen)
 	 */
 
 	scanbuflen = slen;
-	scanbuf = malloc(slen + 2);
+	scanbuf = calloc(1, slen + 2);
 	memcpy(scanbuf, str, slen);
 	scanbuf[slen] = scanbuf[slen + 1] = YY_END_OF_BUFFER_CHAR;
 	scanbufhandle = yy_scan_buffer(scanbuf, slen + 2);
@@ -6066,7 +6066,7 @@ resizeString(bool init, int appendLen)
 	if (init)
 	{
 		scanstring.total = Max(32, appendLen);
-		scanstring.val = (char *) malloc(scanstring.total);
+		scanstring.val = (char *) calloc(1, scanstring.total);
 		scanstring.len = 0;
 	}
 	else

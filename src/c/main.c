@@ -375,7 +375,12 @@ char *jsonpath_to_ast(const char *input)
 	return return_string;
 }
 
-#ifndef __EMSCRIPTEN__
+#ifdef __EMSCRIPTEN__
+void perform_exit(int status)
+{
+	exit(status);
+}
+#else
 int main(int argc, char *argv[])
 {
 	if (argc < 2)

@@ -8,6 +8,15 @@
       "options": {
         "cwd": "${workspaceFolder}/build"
       }
+    },
+    {
+      "label": "build-wasm",
+      "command": "BUILDKIT_PROGRESS=plain docker build -o build .",
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
     }
   ]
 }

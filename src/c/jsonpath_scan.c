@@ -6107,11 +6107,15 @@ parsejsonpath(const char *str, int len, struct Node *escontext)
 
 	jsonpath_scanner_init(str, len);
 
-	if (jsonpath_yyparse((void *) &parseresult, escontext) != 0)
+	int result = jsonpath_yyparse((void *) &parseresult, escontext);
+	if (result != 0) {
 		jsonpath_yyerror(NULL, escontext, "bogus input"); /* shouldn't happen */
+	}
 
 	jsonpath_scanner_finish();
-
+	if (result != 0) {
+		return NULL;
+	}
 	return parseresult;
 }
 

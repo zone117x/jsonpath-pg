@@ -5,7 +5,7 @@
       "type": "lldb",
       "request": "launch",
       "name": "Debug",
-      "program": "${workspaceFolder}/build/jsonpath_parse",
+      "program": "${workspaceFolder}/build/bin/jsonpath_parse",
       "args": [
         "$.asdf[1 to last].**.thing.double() ? ((@.leaf[7] - 12345) == 1 % 9)"
       ],

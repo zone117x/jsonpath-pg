@@ -350,6 +350,27 @@ JsonPathParseResult *get_jsonpath_parse_result(const char *input) {
     return result;
 }
 
+char *jsonpath_to_ast(const char *input) {
+    JsonPathParseResult *result = get_jsonpath_parse_result(input);
+    if (!result)
+	{
+		return NULL;
+	}
+	cJSON *json_ast = cJSON_CreateObject();
+	cJSON *expr = json_path_parse_item_to_json(result->expr);
+	cJSON_AddItemToObject(json_ast, "expr", expr);
+	cJSON_AddBoolToObject(json_ast, "lax", result->lax);
+
+	char *json_string = cJSON_PrintUnformatted(json_ast);
+	char *return_string = malloc(strlen(json_string) + 1);
+	strcpy(return_string, json_string);
+
+	cJSON_Delete(json_ast);
+	cJSON_free(json_string);
+
+	return return_string;
+}
+
 // Create main entry function
 int main(int argc, char *argv[])
 {
@@ -360,26 +381,15 @@ int main(int argc, char *argv[])
 	}
 
 	const char *input = argv[1];
+    char *json_string = jsonpath_to_ast(input);
 
-    JsonPathParseResult *result = get_jsonpath_parse_result(input);
-
-    if (!result)
+    if (!json_string)
 	{
 		// Handle parsing error here, write error message to stderr
 		fprintf(stderr, "Failed to parse jsonpath expression: %s\n", input);
 		exit(1);
 	}
 
-	cJSON *json_ast = cJSON_CreateObject();
-	cJSON *expr = json_path_parse_item_to_json(result->expr);
-	cJSON_AddItemToObject(json_ast, "expr", expr);
-	cJSON_AddBoolToObject(json_ast, "lax", result->lax);
-
-	char *json_string = cJSON_PrintUnformatted(json_ast);
 	printf("%s\n", json_string);
-
-	cJSON_Delete(json_ast);
-	cJSON_free(json_string);
-
 	return 0;
 }

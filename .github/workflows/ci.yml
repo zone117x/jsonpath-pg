@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Compile wasm module
+        run: npm run build
+      - name: Test
+        run: npm test
+      - name: npm pack
+        run: npm pack
+      - uses: actions/upload-artifact@v3
+        with:
+          name: jsonpath-pg-npm-package.tgz
+          path: jsonpath-pg-*.tgz
+          if-no-files-found: error

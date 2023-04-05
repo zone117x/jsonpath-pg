@@ -1,0 +1,34 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      npm-package-version:
+        description: Specify the package.json npm package version, e.g. `0.0.1-alpha.0`
+        required: true
+      npm-package-tag:
+        description: Specify the tag to be used for npm publish, e.g. `latest`, `beta`, `alpha`
+        required: true
+
+jobs:
+  npm-package:
+    runs-on: ubuntu-22.04
+    env:
+      NPM_PACKAGE_VERSION: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.npm-package-version || '0.0.1-alpha.0' }}
+      NPM_PACKAGE_TAG: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.npm-package-tag || 'alpha' }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          registry-url: https://registry.npmjs.org
+          always-auth: true
+      - name: npm version
+        run: npm version --git-tag-version=false --allow-same-version $NPM_PACKAGE_VERSION
+      - run: npm run build
+      - run: npm pack
+      - name: Publish npm package
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish "jsonpath-pg-$NPM_PACKAGE_VERSION.tgz" --tag $NPM_PACKAGE_TAG --access public

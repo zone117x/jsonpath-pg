@@ -4,9 +4,6 @@
   "description": "Parse PostgreSQL jsonpath expressions",
   "main": "src/js/index.js",
   "types": "src/js/index.d.ts",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
     "build": "docker build -o build .",
     "test": "node test/tests.js"
@@ -15,10 +12,18 @@
     "type": "git",
     "url": "git+https://github.com/zone117x/jsonpath-pg.git"
   },
-  "author": "",
+  "author": "Matthew Little",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/zone117x/jsonpath-pg/issues"
   },
-  "homepage": "https://github.com/zone117x/jsonpath-pg#readme"
+  "homepage": "https://github.com/zone117x/jsonpath-pg#readme",
+  "files": [
+    "README.md",
+    "build/jsonpath_parse.js",
+    "build/jsonpath_parse.wasm",
+    "build/jsonpath_parse.wasm.map",
+    "src/js/index.js",
+    "src/js/index.d.ts"
+  ]
 }

@@ -11,7 +11,7 @@
     },
     {
       "label": "build-wasm",
-      "command": "BUILDKIT_PROGRESS=plain docker build -o build .",
+      "command": "docker build -o build .",
       "type": "shell",
       "options": {
         "cwd": "${workspaceFolder}"

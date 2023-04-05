@@ -69,7 +69,6 @@ console.log(JSON.stringify(ast, null, 2));
 <details>
   <summary>Click me: AST console output</summary>
   
-  ### Some Code
   ```json
   {
     "expr": [

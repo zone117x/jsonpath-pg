@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "cJSON.h"
 
@@ -344,15 +345,17 @@ cJSON *json_path_parse_item_to_json2(JsonPathParseItem *item)
 	return json_item;
 }
 
-JsonPathParseResult *get_jsonpath_parse_result(const char *input) {
-    int len = strlen(input);
-    JsonPathParseResult *result = parsejsonpath(input, len, NULL);
-    return result;
+JsonPathParseResult *get_jsonpath_parse_result(const char *input)
+{
+	int len = strlen(input);
+	JsonPathParseResult *result = parsejsonpath(input, len, NULL);
+	return result;
 }
 
-char *jsonpath_to_ast(const char *input) {
-    JsonPathParseResult *result = get_jsonpath_parse_result(input);
-    if (!result)
+char *jsonpath_to_ast(const char *input)
+{
+	JsonPathParseResult *result = get_jsonpath_parse_result(input);
+	if (!result)
 	{
 		return NULL;
 	}
@@ -381,17 +384,25 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	const char *input = argv[1];
-    char *json_string = jsonpath_to_ast(input);
-
-    if (!json_string)
+	bool parse_error = false;
+	for (int i = 1; i < argc; i++)
 	{
-		// Handle parsing error here, write error message to stderr
-		fprintf(stderr, "Failed to parse jsonpath expression: %s\n", input);
-		exit(1);
+		const char *input = argv[i];
+		char *json_string = jsonpath_to_ast(input);
+
+		if (!json_string)
+		{
+			// Handle parsing error here, write error message to stderr
+			fprintf(stderr, "Failed to parse jsonpath expression: %s\n", input);
+			parse_error = true;
+		}
+		else
+		{
+			printf("%s\n", json_string);
+		}
+		free(json_string);
 	}
 
-	printf("%s\n", json_string);
-	return 0;
+	return parse_error ? 1 : 0;
 }
 #endif

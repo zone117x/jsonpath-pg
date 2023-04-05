@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.22)
 project(jsonpath_parse LANGUAGES C)
 
 set(CMAKE_C_STANDARD 11)
@@ -29,7 +29,14 @@ if (DEFINED EMSCRIPTEN)
 
     if (CMAKE_BUILD_TYPE STREQUAL "Debug")
         target_compile_options(jsonpath_parse PRIVATE "-fsanitize=address" "-gsource-map")
-        target_link_options(jsonpath_parse PRIVATE "-fsanitize=address" "-gsource-map" "-sINITIAL_MEMORY=67108864")
+        target_link_options(jsonpath_parse PRIVATE 
+            "-fsanitize=address"
+            "-gsource-map"
+            "-sINITIAL_MEMORY=67108864"
+            "-sASSERTIONS=2"
+            "-sSTACK_OVERFLOW_CHECK=2"
+        )
+        # "-sSAFE_HEAP=1"
     endif()
 
 else ()

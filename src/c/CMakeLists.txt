@@ -18,12 +18,20 @@ set(SOURCE_FILES
 
 if (DEFINED EMSCRIPTEN)
     add_executable(jsonpath_parse ${SOURCE_FILES})
-    #set(CMAKE_EXECUTABLE_SUFFIX ".html")
     set(CMAKE_EXECUTABLE_SUFFIX ".js")
-    target_link_options(jsonpath_parse PRIVATE "-sEXPORTED_FUNCTIONS=_jsonpath_to_ast")
-    target_link_options(jsonpath_parse PRIVATE "-sEXPORTED_RUNTIME_METHODS=['ccall', 'cwrap']")
-    target_link_options(jsonpath_parse PRIVATE "-sMODULARIZE=1")
-    target_link_options(jsonpath_parse PRIVATE "-sENVIRONMENT=node")
+    target_link_options(jsonpath_parse PRIVATE
+        "-sEXPORTED_FUNCTIONS=_jsonpath_to_ast"
+        "-sEXPORTED_RUNTIME_METHODS=['ccall', 'cwrap']"
+        "-sMODULARIZE=1"
+        "-sENVIRONMENT=node"
+        "-sWASM_ASYNC_COMPILATION=0"
+    )
+
+    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+        target_compile_options(jsonpath_parse PRIVATE "-fsanitize=address" "-gsource-map")
+        target_link_options(jsonpath_parse PRIVATE "-fsanitize=address" "-gsource-map" "-sINITIAL_MEMORY=67108864")
+    endif()
+
 else ()
     add_executable(jsonpath_parse ${SOURCE_FILES})
 endif ()

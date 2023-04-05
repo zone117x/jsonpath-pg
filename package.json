@@ -2,7 +2,8 @@
   "name": "jsonpath-pg",
   "version": "0.0.1",
   "description": "Parse PostgreSQL jsonpath expressions",
-  "main": "src/js/lib.js",
+  "main": "src/js/index.js",
+  "types": "src/js/index.d.ts",
   "directories": {
     "test": "test"
   },

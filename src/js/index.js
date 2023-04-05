@@ -1,3 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+
 const jsonpathParseInit = require('../../build/jsonpath_parse.js');
 
 let jsonpathParseModule;
@@ -17,11 +20,6 @@ class InvalidJsonpathExpression extends Error {
     }
 }
 
-/**
- * 
- * @param {string} jsonpathExpression 
- * @returns 
- */
 function jsonpathToAst(jsonpathExpression) {
     if (typeof jsonpathExpression !== 'string') {
         throw new TypeError('jsonpathToAst: jsonpathExpression argument must be a string');
@@ -53,6 +51,7 @@ function jsonpathToAst(jsonpathExpression) {
 // Export default and named functions
 module.exports = jsonpathToAst;
 module.exports = Object.assign(module.exports, {
+    default: jsonpathToAst,
     jsonpathToAst,
     initJsonpathParseModule,
     InvalidJsonpathExpression,

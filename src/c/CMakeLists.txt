@@ -16,4 +16,14 @@ set(SOURCE_FILES
     main.c
 )
 
-add_executable(jsonpath_parse ${SOURCE_FILES})
+if (DEFINED EMSCRIPTEN)
+    add_executable(jsonpath_parse ${SOURCE_FILES})
+    #set(CMAKE_EXECUTABLE_SUFFIX ".html")
+    set(CMAKE_EXECUTABLE_SUFFIX ".js")
+    target_link_options(jsonpath_parse PRIVATE "-sEXPORTED_FUNCTIONS=_jsonpath_to_ast")
+    target_link_options(jsonpath_parse PRIVATE "-sEXPORTED_RUNTIME_METHODS=['ccall', 'cwrap']")
+    target_link_options(jsonpath_parse PRIVATE "-sMODULARIZE=1")
+    target_link_options(jsonpath_parse PRIVATE "-sENVIRONMENT=node")
+else ()
+    add_executable(jsonpath_parse ${SOURCE_FILES})
+endif ()

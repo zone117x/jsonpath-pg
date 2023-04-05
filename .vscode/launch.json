@@ -8,9 +8,17 @@
       "program": "${workspaceFolder}/build/bin/jsonpath_parse",
       "args": [
         "$.asdf[1 to last].**.thing.double() ? ((@.leaf[7] - 12345) == 1 % 9)"
+        //"%%%%%%%--||||>>>>"
       ],
       "cwd": "${workspaceFolder}",
       "preLaunchTask": "build"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Nodejs wasm test",
+      "program": "${workspaceFolder}/test/test-wasm.js",
+      "cwd": "${workspaceFolder}"
     }
   ]
 }

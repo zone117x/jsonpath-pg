@@ -364,6 +364,7 @@ char *jsonpath_to_ast(const char *input) {
 	char *json_string = cJSON_PrintUnformatted(json_ast);
 	char *return_string = malloc(strlen(json_string) + 1);
 	strcpy(return_string, json_string);
+	return_string[strlen(json_string)] = '\0';
 
 	cJSON_Delete(json_ast);
 	cJSON_free(json_string);
@@ -371,7 +372,7 @@ char *jsonpath_to_ast(const char *input) {
 	return return_string;
 }
 
-// Create main entry function
+#ifndef __EMSCRIPTEN__
 int main(int argc, char *argv[])
 {
 	if (argc < 2)
@@ -393,3 +394,4 @@ int main(int argc, char *argv[])
 	printf("%s\n", json_string);
 	return 0;
 }
+#endif

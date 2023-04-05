@@ -1,26 +1,24 @@
-const jsonpathParseInit = require('../build/jsonpath_parse.js');
+const jsonpathParse = require('..');
 
-const jsonpathParse = jsonpathParseInit();
-const parseFn = jsonpathParse.cwrap('jsonpath_to_ast', 'string', ['string']);
-
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 10000; i++) {
     const input = '$.asdf[1 to last].**.thing[*].a.b.c.d.e.f.g.double() ? ((@.leaf[7] - 12345) == 1 % 9)';
-    const result = parseFn(input);
-    jsonpathParse._free_all_allocations();
-    // console.log('parse result: ' + result);
+    const result = jsonpathParse(input);
     if (i % 100 === 0) {
         console.log(`parse result num ${i}: ${result}`);
     }
 }
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 10000; i++) {
     const input = '$.asdfasdf ? (@.asdf <<<<<<||||||8adsfasdfhauhweruiahefasdjkfhawejrkhtakjdhfgalksjdhgfajksdhfjk';
-    const result = parseFn(input);
-    jsonpathParse._free_all_allocations();
-    // console.log('parse result: ' + result);
+    try {
+        jsonpathParse(input);
+        throw new Error('Should have thrown for invalid jsonpath expression');
+    } catch (error) {
+        // ignore
+    }
     if (i % 100 === 0) {
-        console.log(`parse invalid result num ${i}: ${result}`);
+        console.log(`parse invalid result num ${i}`);
     }
 }
 
-jsonpathParse._perform_exit(0);
+jsonpathParse.getWasmModule()._perform_exit(0);

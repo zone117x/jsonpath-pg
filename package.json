@@ -1,0 +1,23 @@
+{
+  "name": "jsonpath-pg",
+  "version": "0.0.1",
+  "description": "Parse PostgreSQL jsonpath expressions",
+  "main": "src/js/lib.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "docker build -o build .",
+    "test": "node test/tests.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zone117x/jsonpath-pg.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zone117x/jsonpath-pg/issues"
+  },
+  "homepage": "https://github.com/zone117x/jsonpath-pg#readme"
+}

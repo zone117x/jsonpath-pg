@@ -6,7 +6,9 @@
   "types": "src/js/index.d.ts",
   "scripts": {
     "build": "docker build -o build .",
-    "test": "node test/tests.js"
+    "test": "npm run test:unit && npm run test:types",
+    "test:unit": "node test/tests.js",
+    "test:types": "tsc --noEmit --strict test/types.ts && ts-node test/types.ts"
   },
   "repository": {
     "type": "git",
@@ -25,5 +27,10 @@
     "build/jsonpath_parse.wasm.map",
     "src/js/index.js",
     "src/js/index.d.ts"
-  ]
+  ],
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.3"
+  }
 }

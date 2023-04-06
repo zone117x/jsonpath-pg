@@ -36,7 +36,7 @@ jobs:
         with:
           node-version: '16'
       - run: npm install
-      - run: npm build:docs
+      - run: npm run build:docs
 
       - name: Setup Pages
         uses: actions/configure-pages@v3

@@ -6,6 +6,7 @@
   "types": "src/js/index.d.ts",
   "scripts": {
     "build": "docker build -o build .",
+    "build:docs": "typedoc --entryPoints src/js/index.d.ts --out docs",
     "test": "npm run test:unit && npm run test:types",
     "test:unit": "node test/tests.js",
     "test:types": "tsc --noEmit --strict test/types.ts && ts-node test/types.ts"
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@types/node": "^18.15.11",
     "ts-node": "^10.9.1",
+    "typedoc": "^0.23.28",
     "typescript": "^5.0.3"
   }
 }

@@ -1,0 +1,28 @@
+name: Semantic release
+
+on:
+  push:
+    branches: ["main", "beta"]
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  npm-package:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - run: npm install
+      - run: npm run build
+
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

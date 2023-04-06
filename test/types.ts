@@ -70,6 +70,225 @@ const exampleOutput: JsonpathAst = {
 };
 console.log('✅ Example output conforms to JsonpathAst interface');
 
+const exampleOutput2: JsonpathAst = {
+  "expr": [
+    {
+      "type": "@"
+    },
+    {
+      "type": "[subscript]",
+      "elems": [
+        {
+          "from": [
+            {
+              "type": "numeric",
+              "value": 0
+            }
+          ],
+          "to": []
+        }
+      ]
+    },
+    {
+      "type": "[subscript]",
+      "elems": [
+        {
+          "from": [
+            {
+              "type": "numeric",
+              "value": 1
+            }
+          ],
+          "to": []
+        },
+        {
+          "from": [
+            {
+              "type": "numeric",
+              "value": 2
+            }
+          ],
+          "to": []
+        },
+        {
+          "from": [
+            {
+              "type": "numeric",
+              "value": 3
+            }
+          ],
+          "to": []
+        }
+      ]
+    },
+    {
+      "type": ".*"
+    },
+    {
+      "type": "[subscript]",
+      "elems": [
+        {
+          "from": [
+            {
+              "type": "numeric",
+              "value": 6
+            }
+          ],
+          "to": [
+            {
+              "type": "numeric",
+              "value": 32
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": ".**",
+      "first": 0,
+      "last": 4294967295
+    }
+  ],
+  "lax": true
+};
+assert.ok(exampleOutput2);
+console.log('✅ Example output 2 conforms to JsonpathAst interface');
+
+const exampleOutput3: JsonpathAst = {
+  "expr": [
+    {
+      "type": "$"
+    },
+    {
+      "type": ".key",
+      "value": "asdf"
+    },
+    {
+      "type": "[subscript]",
+      "elems": [
+        {
+          "from": [
+            {
+              "type": "numeric",
+              "value": 1
+            }
+          ],
+          "to": [
+            {
+              "type": "last"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": ".**",
+      "first": 0,
+      "last": 4294967295
+    },
+    {
+      "type": ".key",
+      "value": "thing"
+    },
+    {
+      "type": "[*]"
+    },
+    {
+      "type": ".key",
+      "value": "a"
+    },
+    {
+      "type": ".key",
+      "value": "b"
+    },
+    {
+      "type": ".key",
+      "value": "c"
+    },
+    {
+      "type": ".key",
+      "value": "d"
+    },
+    {
+      "type": ".key",
+      "value": "e"
+    },
+    {
+      "type": ".key",
+      "value": "f"
+    },
+    {
+      "type": ".key",
+      "value": "g"
+    },
+    {
+      "type": "double"
+    },
+    {
+      "type": "?",
+      "arg": [
+        {
+          "type": "==",
+          "left": [
+            {
+              "type": "-",
+              "left": [
+                {
+                  "type": "@"
+                },
+                {
+                  "type": ".key",
+                  "value": "leaf"
+                },
+                {
+                  "type": "[subscript]",
+                  "elems": [
+                    {
+                      "from": [
+                        {
+                          "type": "numeric",
+                          "value": 7
+                        }
+                      ],
+                      "to": []
+                    }
+                  ]
+                }
+              ],
+              "right": [
+                {
+                  "type": "numeric",
+                  "value": 12345
+                }
+              ]
+            }
+          ],
+          "right": [
+            {
+              "type": "%",
+              "left": [
+                {
+                  "type": "numeric",
+                  "value": 1
+                }
+              ],
+              "right": [
+                {
+                  "type": "numeric",
+                  "value": 9
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "lax": true
+};
+assert.ok(exampleOutput3);
+console.log('✅ Example output 3 conforms to JsonpathAst interface');
+
 // Test default export
 const defaultResult: JsonpathAst = jsonpathToAstDefault(exampleInput);
 assert.deepEqual(defaultResult, exampleOutput);

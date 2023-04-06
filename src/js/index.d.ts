@@ -80,7 +80,7 @@ export interface JsonpathAnyArray extends JsonpathItemType {
 }
 
 export interface JsonpathAnyKey extends JsonpathItemType {
-    type: ".**";
+    type: ".*";
 }
 
 export interface JsonpathCurrent extends JsonpathItemType {
@@ -249,11 +249,11 @@ export interface JsonpathIndexArray extends JsonpathItemType {
     elems: {
         from: JsonpathItem[];
         to: JsonpathItem[];
-    };
+    }[];
 }
 
 export interface JsonpathAny extends JsonpathItemType {
-    type: ".*";
+    type: ".**";
     first: number;
     last: number;
 }

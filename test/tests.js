@@ -23,7 +23,15 @@ const testVectors = [
     [
         '$.track ? (exists(@.segments[*] ? (@.HR > 130))).segments.size()',
         '{"expr":[{"type":"$"},{"type":".key","value":"track"},{"type":"?","arg":[{"type":"exists","arg":[{"type":"@"},{"type":".key","value":"segments"},{"type":"[*]"},{"type":"?","arg":[{"type":">","left":[{"type":"@"},{"type":".key","value":"HR"}],"right":[{"type":"numeric","value":130}]}]}]}]},{"type":".key","value":"segments"},{"type":"size"}],"lax":true}'
-    ]
+    ],
+    [
+        '+ $.x',
+        '{"expr":[{"type":"+unary","arg":[{"type":"$"},{"type":".key","value":"x"}]}],"lax":true}'
+    ],
+    [
+        '- $.x',
+        '{"expr":[{"type":"-unary","arg":[{"type":"$"},{"type":".key","value":"x"}]}],"lax":true}'
+    ],
 ];
 
 // Test default export
@@ -42,6 +50,13 @@ testVectors.forEach(([input, expected]) => {
     assert.deepEqual(result, JSON.parse(expected));
     console.log(`✅ test passed for input: ${input}`);
 });
+
+// Test expression containing large scalars
+const exprWithLargeScalars = '$.asdf[1 to last].**.thing.ffffffffffffffffffffffffffffffffxyz.double() ? ((@.leaf[340282366920938463463374607431768211455] - 12345) == 1 % 9)';
+const largeScalarsResult = lib.jsonpathToAst(exprWithLargeScalars);
+const largeScalarsExpectedResult = '{"expr":[{"type":"$"},{"type":".key","value":"asdf"},{"type":"[subscript]","elems":[{"from":[{"type":"numeric","value":1}],"to":[{"type":"last"}]}]},{"type":".**","first":0,"last":4294967295},{"type":".key","value":"thing"},{"type":".key","value":"ffffffffffffffffffffffffffffffffxyz"},{"type":"double"},{"type":"?","arg":[{"type":"==","left":[{"type":"-","left":[{"type":"@"},{"type":".key","value":"leaf"},{"type":"[subscript]","elems":[{"from":[{"type":"numeric","value":3.402823669209385e+38}],"to":[]}]}],"right":[{"type":"numeric","value":12345}]}],"right":[{"type":"%","left":[{"type":"numeric","value":1}],"right":[{"type":"numeric","value":9}]}]}]}],"lax":true}';
+assert.deepEqual(largeScalarsResult, JSON.parse(largeScalarsExpectedResult));
+console.log('✅ parsed expression with large scalars');
 
 // Invalid jsonpath expressions
 const invalidTestVectors = [

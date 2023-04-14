@@ -40,6 +40,8 @@ export type JsonpathTypeID =
     | "*"
     | "/"
     | "%"
+    | "+unary"
+    | "-unary"
     | "[*]"
     | ".*"
     | "[subscript]"
@@ -229,11 +231,11 @@ export interface JsonpathNot extends JsonpathUnaryOperation {
 }
 
 export interface JsonpathPlus extends JsonpathUnaryOperation {
-    type: "+";
+    type: "+unary";
 }
 
 export interface JsonpathMinus extends JsonpathUnaryOperation {
-    type: "-";
+    type: "-unary";
 }
 
 export interface JsonpathExists extends JsonpathUnaryOperation {

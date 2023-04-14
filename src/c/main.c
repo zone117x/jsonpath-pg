@@ -40,10 +40,8 @@ const char *json_path_item_type_to_string(JsonPathItemType type)
 		return "<=";
 	case jpiGreaterOrEqual:
 		return ">=";
-	case jpiPlus:
 	case jpiAdd:
 		return "+";
-	case jpiMinus:
 	case jpiSub:
 		return "-";
 	case jpiMul:
@@ -52,6 +50,10 @@ const char *json_path_item_type_to_string(JsonPathItemType type)
 		return "/";
 	case jpiMod:
 		return "%";
+	case jpiPlus:
+		return "+unary";
+	case jpiMinus:
+		return "-unary";
 	case jpiAnyArray:
 		return "[*]";
 	case jpiAnyKey:
@@ -137,13 +139,9 @@ cJSON *json_path_parse_item_to_json(JsonPathParseItem *item)
 			break;
 
 		case jpiNumeric:
-		{
-			// char *num_str = numeric_normalize(item->value.numeric);
-			// cJSON_AddStringToObject(json_item, "value", num_str);
-			// pfree(num_str);
+			// cJSON_AddStringToObject(json_item, "value", item->value.numeric.val);
 			cJSON_AddNumberToObject(json_item, "value", item->value.numeric);
-		}
-		break;
+			break;
 
 		case jpiBool:
 			cJSON_AddBoolToObject(json_item, "value", item->value.boolean);

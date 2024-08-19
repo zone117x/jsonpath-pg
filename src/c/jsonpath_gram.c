@@ -2887,7 +2887,7 @@ makeItemUnary(JsonPathItemType type, JsonPathParseItem *a)
 	if (type == jpiMinus && a->type == jpiNumeric && !a->next)
 	{
 		v = makeItemType(jpiNumeric);
-		v->value.numeric = a->value.numeric;
+		v->value.numeric = -a->value.numeric;
 		return v;
 	}
 

@@ -32,6 +32,14 @@ const testVectors = [
         '- $.x',
         '{"expr":[{"type":"-unary","arg":[{"type":"$"},{"type":".key","value":"x"}]}],"lax":true}'
     ],
+    [
+        '+ 1',
+        '{"expr":[{"type":"numeric","value":1}],"lax":true}'
+    ],
+    [
+        '- 1',
+        '{"expr":[{"type":"numeric","value":-1}],"lax":true}'
+    ],
 ];
 
 // Test default export
